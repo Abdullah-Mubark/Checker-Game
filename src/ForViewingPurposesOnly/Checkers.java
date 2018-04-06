@@ -12,9 +12,12 @@ public class Checkers extends JFrame
       setDefaultCloseOperation(EXIT_ON_CLOSE);
 
       Board board = new Board();
-      board.add(new Checker(CheckerType.RED_REGULAR), 4, 1);
-      board.add(new Checker(CheckerType.BLACK_REGULAR), 6, 3);
-      board.add(new Checker(CheckerType.RED_KING), 5, 6);
+      for (int i = 1; i <= 8; i++) {
+            for (int j = 1; j <= 2; j++) {
+                board.add(new Checker(CheckerType.RED_REGULAR), j, i);
+                board.add(new Checker(CheckerType.BLACK_REGULAR), 9-j, i);
+            }
+        }
       setContentPane(board);
 
       pack();
