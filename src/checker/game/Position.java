@@ -10,24 +10,38 @@ package checker.game;
  * @author Kamal
  */
 public class Position {
+
     private int x;
     private int y;
 
-    public Position(int x, int y){
+    public Position(int x, int y) {
         setX(x);
         setY(y);
     }
 
-    public int getX(){
+    public boolean equals(Position p) {
+        return ((this.x == p.x)
+                && (this.y == p.y));
+    }
+
+    @Override
+    public String toString() {
+        return String.format("{%d,%d}", this.x, this.y);
+    }
+
+    public int getX() {
         return x;
     }
-    public void setX(int x){
+
+    public void setX(int x) {
         this.x = x;
     }
-    public void setY(int y){
+
+    public void setY(int y) {
         this.y = y;
     }
-    public int getY(){
+
+    public int getY() {
         return y;
     }
 }
