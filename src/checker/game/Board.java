@@ -40,6 +40,14 @@ public class Board {
         }
     }
 
+    public Board duplicate() {
+        Board newBoard = new Board(this.board);
+        newBoard.blackCheckers = this.blackCheckers;
+        newBoard.whiteCheckers = this.whiteCheckers;
+
+        return newBoard;
+    }
+
     public void Display() {
         this.DisplayColIndex();
         this.DrawHorizontalLine();
@@ -100,4 +108,22 @@ public class Board {
 
         return str;
     }
+
+    public boolean CheckGameComplete() {
+        return (this.blackCheckers == 0 || this.whiteCheckers == 0);
+    }
+
+    public boolean CheckGameDraw(PlayerType turn) {
+//        
+//        ArrayList<Move> possibleMoveSeq = Robot.expandMoves(this.duplicate(), turn);
+//        
+//        if(possibleMoveSeq.isEmpty()){
+//            return true;
+//            
+//        }else{
+//            return false;
+//        }
+        return true;
+    }
+
 }

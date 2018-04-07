@@ -1,7 +1,8 @@
 package checker.game;
 public class main {
     public static void main(String args[]){        
-        Board board = new Board();
-        board.Display();
+        Game game = new Game();
+        game.board.Display();
+        game.PlayGame();
     }    
 }
