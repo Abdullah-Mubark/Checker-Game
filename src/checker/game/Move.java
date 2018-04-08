@@ -15,10 +15,17 @@ public class Move {
 
     private Position intialpos;
     private Position finalpos;
+    private boolean isCapture;
 
     public Move(Position intialpos, Position finalpos) {
         this.intialpos = intialpos;
         this.finalpos = finalpos;
+    }
+
+    public Move(Position intialpos, Position finalpos, boolean isCapture) {
+        this.intialpos = intialpos;
+        this.finalpos = finalpos;
+        this.isCapture = isCapture;
     }
 
     public boolean ExistsInList(ArrayList<Move> moves) {
@@ -55,4 +62,13 @@ public class Move {
     public void setFinalpos(Position finalpos) {
         this.finalpos = finalpos;
     }
+
+    public boolean getIsCapture() {
+        return isCapture;
+    }
+
+    public void setIsCapture(boolean isCapture) {
+        this.isCapture = isCapture;
+    }
+
 }

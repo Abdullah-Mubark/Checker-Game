@@ -10,6 +10,7 @@ package checker.game;
  * @author Kamal
  */
 public class Board {
+
     private static Board instance;
     private int blackCheckers;
     private int whiteCheckers;
@@ -17,13 +18,14 @@ public class Board {
     public static final int cols = 8;
     private Checker[][] board;
 
-    public static Board getInstance(){
-        if(instance == null){
+    public static Board getInstance() {
+        if (instance == null) {
             return new Board();
         } else {
             return instance;
         }
     }
+
     private Board() {
         this.blackCheckers = this.whiteCheckers = 12;
 
@@ -38,7 +40,7 @@ public class Board {
             {new Checker(CheckerType.BLACK_REGULAR, new Position(7, 0)), null, new Checker(CheckerType.BLACK_REGULAR, new Position(7, 2)), null, new Checker(CheckerType.BLACK_REGULAR, new Position(7, 4)), null, new Checker(CheckerType.BLACK_REGULAR, new Position(7, 6)), null},};
     }
 
-    public Board(Checker[][] board) {
+    private Board(Checker[][] board) {
         this.blackCheckers = this.whiteCheckers = 12;
 
         this.board = new Checker[rows][cols];
@@ -47,6 +49,22 @@ public class Board {
         }
     }
 
+    public int getBlackCheckers() {
+        return blackCheckers;
+    }
+
+    public void setBlackCheckers(int blackCheckers) {
+        this.blackCheckers = blackCheckers;
+    }
+
+    public int getWhiteCheckers() {
+        return whiteCheckers;
+    }
+
+    public void setWhiteCheckers(int whiteCheckers) {
+        this.whiteCheckers = whiteCheckers;
+    }
+    
     public Board duplicate() {
         Board newBoard = new Board(this.board);
         newBoard.blackCheckers = this.blackCheckers;
@@ -133,10 +151,11 @@ public class Board {
         return true;
     }
 
-    public Checker[][] getBoard(){
+    public Checker[][] getBoard() {
         return board;
     }
-    public void setBoard(Checker[][] board){
+
+    public void setBoard(Checker[][] board) {
         this.board = board;
     }
 }
