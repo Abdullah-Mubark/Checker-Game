@@ -10,14 +10,21 @@ package checker.game;
  * @author Kamal
  */
 public class Board {
-
+    private static Board instance;
     private int blackCheckers;
     private int whiteCheckers;
     public static final int rows = 8;
     public static final int cols = 8;
-    Checker[][] board;
+    private Checker[][] board;
 
-    public Board() {
+    public static Board getInstance(){
+        if(instance == null){
+            return new Board();
+        } else {
+            return instance;
+        }
+    }
+    private Board() {
         this.blackCheckers = this.whiteCheckers = 12;
 
         this.board = new Checker[][]{
@@ -126,4 +133,10 @@ public class Board {
         return true;
     }
 
+    public Checker[][] getBoard(){
+        return board;
+    }
+    public void setBoard(Checker[][] board){
+        this.board = board;
+    }
 }

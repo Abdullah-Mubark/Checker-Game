@@ -10,6 +10,6 @@ package checker.game;
  * @author Abdullah
  */
 public enum PlayerType {
-    white,
-    black
+    WHITE,
+    BLACK
 }
