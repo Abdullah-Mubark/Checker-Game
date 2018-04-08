@@ -20,6 +20,7 @@ public class Game {
     }
 
     public void PlayGame() {
+        
         board.getBoard()[1][0] = null;
         board.getBoard()[1][4] = null;
         board.getBoard()[0][1] = null;
@@ -29,20 +30,23 @@ public class Game {
         board.getBoard()[2][1] = null;
         board.getBoard()[2][7] = null;
         board.setWhiteCheckers(board.getWhiteCheckers() - 8);
+        
         while (!Game.board.CheckGameComplete()) {
-            ArrayList<Move> nonForcedMoves = Black.getNonForcedMoves(board);
-            ArrayList<Move> ForcedMoves = Black.getForcedMoves(board);
-            Move nextMove;
-            if (ForcedMoves.size() > 0) {
-                System.out.println("\n\nELIMINATE!!!!\n");
-                nextMove = ForcedMoves.get((int) Math.random() * ForcedMoves.size());
-            } else {
-                nextMove = nonForcedMoves.get((int) Math.random() * nonForcedMoves.size());
+            Black.calculateAllpossibleMoves(board);
+            ArrayList<Move> moves = Black.allowedMoves;
+            Move nextMove = moves.get((int) (Math.random() * moves.size()));
+            if(nextMove.getIsCapture()){
+                System.out.println("must eliminate !!");
+                System.out.println("Move list contains");
+                for (Move m:moves) {
+                    System.out.println(m.toString());
+                }
+                System.out.println("\n");
             }
-            //System.out.println(nextMove.toString());
             makeMove(nextMove);
+            System.out.println(nextMove.toString());
             board.Display();
-            System.out.println(board.getWhiteCheckers());
+
             //board.Display();
 //            if(Game.board.CheckGameDraw(Player.white)){
 //                break;
@@ -67,7 +71,6 @@ public class Game {
 //                Game.board.Display();
 //                break;
 //            }
-
         }
 //        ArrayList<Move> moves = Black.getNonForcedMoves(board);
 //        System.out.println(moves.size());
@@ -120,7 +123,7 @@ public class Game {
                     board.getBoard()[x1 + 1][y1 - 1] = null;
                     break;
             }
-            
+
             board.setWhiteCheckers(board.getWhiteCheckers() - 1);
 
         }

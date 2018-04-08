@@ -158,4 +158,12 @@ public class Board {
     public void setBoard(Checker[][] board) {
         this.board = board;
     }
+    
+    public static boolean CheckerIsBlack(Checker c){
+        return c.getType()== CheckerType.BLACK_REGULAR || c.getType()== CheckerType.BLACK_KING;
+    }
+    
+    public static boolean CheckerIsWhite(Checker c){
+         return c.getType()== CheckerType.WHITE_REGULAR || c.getType()== CheckerType.WHITE_KING;
+    }
 }
