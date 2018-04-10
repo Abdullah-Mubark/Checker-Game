@@ -20,31 +20,45 @@ public class Game {
     }
 
     public void PlayGame() {
-        
-        board.getBoard()[1][0] = null;
-        board.getBoard()[1][4] = null;
-        board.getBoard()[0][1] = null;
-        board.getBoard()[0][3] = null;
-        board.getBoard()[0][5] = null;
-        board.getBoard()[0][7] = null;
-        board.getBoard()[2][1] = null;
-        board.getBoard()[2][7] = null;
-        board.setWhiteCheckers(board.getWhiteCheckers() - 8);
-        
+
+//        board.getBoard()[1][0] = null;
+//        board.getBoard()[0][1] = null;
+//        board.getBoard()[0][3] = null;
+//        board.getBoard()[0][5] = null;
+//        board.getBoard()[0][7] = null;
+//        board.getBoard()[2][7] = null;
+//        board.setWhiteCheckers(board.getWhiteCheckers() - 6);
         while (!Game.board.CheckGameComplete()) {
+
+            // Black's turn
             Black.calculateAllpossibleMoves(board);
-            ArrayList<Move> moves = Black.allowedMoves;
-            Move nextMove = moves.get((int) (Math.random() * moves.size()));
-            if(nextMove.getIsCapture()){
-                System.out.println("must eliminate !!");
-                System.out.println("Move list contains");
-                for (Move m:moves) {
-                    System.out.println(m.toString());
-                }
-                System.out.println("\n");
+            ArrayList<Move> movesForBlack = Black.allowedMoves;
+            Move nextMoveBlack = movesForBlack.get((int) (Math.random() * movesForBlack.size()));
+            System.out.println("Moves avaliable are: (BLACK)");
+            System.out.println("----------------------------");
+            for (Move m : movesForBlack) {
+                System.out.println(m.toString());
             }
-            makeMove(nextMove);
-            System.out.println(nextMove.toString());
+            System.out.println("----------------------------");
+            makeMove(nextMoveBlack);
+            board.Display();
+
+            //check if black already won
+            if (Game.board.CheckGameComplete()) {
+                break;
+            }
+
+            // White's turn
+            White.calculateAllpossibleMoves(board);
+            ArrayList<Move> movesForWhite = White.allowedMoves;
+            Move nextMoveWhite = movesForWhite.get((int) (Math.random() * movesForWhite.size()));
+            System.out.println("Moves avaliable are: (White)");
+            System.out.println("----------------------------");
+            for (Move m : movesForWhite) {
+                System.out.println(m.toString());
+            }
+            System.out.println("----------------------------");
+            makeMove(nextMoveWhite);
             board.Display();
 
             //board.Display();
@@ -52,7 +66,7 @@ public class Game {
 //                break;
 //            }
 //
-//            White.Move();
+//           
 //            if(Game.board.CheckGameComplete()){
 //                UserInteractions.DisplayGreetings(Player.white);
 //                Game.board.Display();
@@ -98,17 +112,14 @@ public class Game {
         int y2 = move.getFinalpos().getY();
         CheckerType ct = board.getBoard()[x1][y1].getType();
 
-        if (!move.getIsCapture()) {
-            board.getBoard()[x2][y2] = new Checker(ct, new Position(x2, y2));
-            board.getBoard()[x1][y1] = null;
-        } else {
-            board.getBoard()[x2][y2] = new Checker(ct, new Position(x2, y2));
-            board.getBoard()[x1][y1] = null;
+        board.getBoard()[x2][y2] = new Checker(ct, new Position(x2, y2));
+        board.getBoard()[x1][y1] = null;
 
+        if (move.getIsCapture()) {
             MoveDir dir = x2 < x1 ? (y2 < y1 ? MoveDir.forwardLeft : MoveDir.forwardRight)
                     : (y2 < y1 ? MoveDir.backwardLeft : MoveDir.backwardRight);
 
-            // Removing Black Piece from the board
+            // Removing Piece from the board
             switch (dir) {
                 case forwardRight:
                     board.getBoard()[x1 - 1][y1 + 1] = null;
@@ -123,9 +134,11 @@ public class Game {
                     board.getBoard()[x1 + 1][y1 - 1] = null;
                     break;
             }
-
-            board.setWhiteCheckers(board.getWhiteCheckers() - 1);
-
+            if (ct == CheckerType.BLACK_KING || ct == CheckerType.BLACK_REGULAR) {
+                board.setWhiteCheckers(board.getWhiteCheckers() - 1);
+            } else {
+                board.setBlackCheckers(board.getBlackCheckers() - 1);
+            }
         }
 
         //promote to King
