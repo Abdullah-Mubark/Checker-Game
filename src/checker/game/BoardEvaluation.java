@@ -17,8 +17,8 @@ public class BoardEvaluation {
     public final int POINT_WON = 100000;
     public final int POINT_KING = 2000;
     public final int POINT_NORMAL = 1000;
-    public final int POINT_NORMAL_ATTACK = 50;
-    public final int POINT_KILL_ATTACK = 100;
+//    public final int POINT_NORMAL_ATTACK = 50;
+//    public final int POINT_KILL_ATTACK = 100;
 
     public static BoardEvaluation getInstance() {
         return new BoardEvaluation();
@@ -44,7 +44,7 @@ public class BoardEvaluation {
             return wValue;
         } else {
             wValue = WhiteBlackPiecesDifferencePoints(board);
-            wValue += BoardAttacksPoints(board);
+//            wValue += BoardAttacksPoints(board);
             wValue /= board.getBlackCheckers();
 
         }
@@ -60,7 +60,7 @@ public class BoardEvaluation {
             return bValue;
         } else {
             bValue = WhiteBlackPiecesDifferencePoints(board);
-            bValue -= BoardAttacksPoints(board);
+//            bValue -= BoardAttacksPoints(board);
             bValue /= board.getWhiteCheckers();
         }
 
@@ -99,34 +99,34 @@ public class BoardEvaluation {
         return value;
     }
 
-    private int BoardAttacksPoints(Board board) {
-
-        int value = 0;
-        Black black = new Black();
-        black.calculateAllpossibleMoves(board);
-        ArrayList<Move> blackMoves = black.allowedMoves;
-
-        White white = new White();
-        white.calculateAllpossibleMoves(board);
-        ArrayList<Move> whiteMoves = white.allowedMoves;
-
-        // calculate moves points for black
-        for (Move Bmove : blackMoves) {
-            if (Bmove.getIsCapture()) {
-                value -= POINT_KILL_ATTACK;
-            } else {
-                value -= POINT_NORMAL_ATTACK;
-            }
-
-        }
-        // calculate moves points for white
-        for (Move Wmove : whiteMoves) {
-            if (Wmove.getIsCapture()) {
-                value += POINT_KILL_ATTACK;
-            } else {
-                value += POINT_NORMAL_ATTACK;
-            }
-        }
-        return value;
-    }
+//    private int BoardAttacksPoints(Board board) {
+//
+//        int value = 0;
+//        Black black = new Black();
+//        black.calculateAllpossibleMoves(board);
+//        ArrayList<Move> blackMoves = black.allowedMoves;
+//
+//        White white = new White();
+//        white.calculateAllpossibleMoves(board);
+//        ArrayList<Move> whiteMoves = white.allowedMoves;
+//
+//        // calculate moves points for black
+//        for (Move Bmove : blackMoves) {
+//            if (Bmove.getIsCapture()) {
+//                value -= POINT_KILL_ATTACK;
+//            } else {
+//                value -= POINT_NORMAL_ATTACK;
+//            }
+//
+//        }
+//        // calculate moves points for white
+//        for (Move Wmove : whiteMoves) {
+//            if (Wmove.getIsCapture()) {
+//                value += POINT_KILL_ATTACK;
+//            } else {
+//                value += POINT_NORMAL_ATTACK;
+//            }
+//        }
+//        return value;
+//    }
 }

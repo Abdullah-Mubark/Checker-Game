@@ -13,16 +13,14 @@ import java.util.ArrayList;
  */
 public class Board {
 
-    private Board instance;
+  
     private int blackCheckers;
     private int whiteCheckers;
     public static final int rows = 8;
     public static final int cols = 8;
     private Checker[][] board;
 
-    public Board getInstance() {
-        return new Board();
-    }
+   
 
     public Board() {
         this.blackCheckers = this.whiteCheckers = 12;
@@ -46,7 +44,7 @@ public class Board {
             System.arraycopy(board[i], 0, this.board[i], 0, cols);
         }
     }
-    
+
     public int getBlackCheckers() {
         return blackCheckers;
     }
@@ -69,6 +67,50 @@ public class Board {
         newBoard.whiteCheckers = this.whiteCheckers;
 
         return newBoard;
+    }
+
+    // make sure a move is valid
+    public void makeMove(Move move) {
+        int x1 = move.getIntialpos().getX();
+        int y1 = move.getIntialpos().getY();
+        int x2 = move.getFinalpos().getX();
+        int y2 = move.getFinalpos().getY();
+        CheckerType ct = board[x1][y1].getType();
+
+        board[x2][y2] = new Checker(ct, new Position(x2, y2));
+        board[x1][y1] = null;
+
+        if (move.getIsCapture()) {
+            MoveDir dir = x2 < x1 ? (y2 < y1 ? MoveDir.forwardLeft : MoveDir.forwardRight)
+                    : (y2 < y1 ? MoveDir.backwardLeft : MoveDir.backwardRight);
+
+            // Removing Piece from the board
+            switch (dir) {
+                case forwardRight:
+                    board[x1 - 1][y1 + 1] = null;
+                    break;
+                case forwardLeft:
+                    board[x1 - 1][y1 - 1] = null;
+                    break;
+                case backwardRight:
+                    board[x1 + 1][y1 + 1] = null;
+                    break;
+                case backwardLeft:
+                    board[x1 + 1][y1 - 1] = null;
+                    break;
+            }
+            if (ct == CheckerType.BLACK_KING || ct == CheckerType.BLACK_REGULAR) {
+                this.whiteCheckers--;
+            } else {
+                this.blackCheckers--;
+            }
+        }
+        //promote to King
+        if (ct == CheckerType.BLACK_REGULAR && x2 == 0) {
+            board[x2][y2].setType(CheckerType.BLACK_KING);
+        } else if (ct == CheckerType.WHITE_REGULAR && x2 == Board.rows - 1) {
+            board[x2][y2].setType(CheckerType.WHITE_KING);
+        }
     }
 
     public void Display() {

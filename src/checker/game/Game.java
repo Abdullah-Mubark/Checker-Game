@@ -28,7 +28,7 @@ public class Game {
     public void PlayGame() {
 
         while (true) {
-            
+
             // Black's turn
             //************************************************************************************************
             black.calculateAllpossibleMoves(board);
@@ -38,8 +38,8 @@ public class Game {
             }
 
             ArrayList<Move> movesForBlack = black.allowedMoves;
+//            Move nextMoveBlack = movesForBlack.get((int) (Math.random() * movesForBlack.size()));
             Move nextMoveBlack = movesForBlack.get((int) (Math.random() * movesForBlack.size()));
-
             System.out.println("Moves avaliable are: (BLACK)");
             System.out.println("----------------------------");
             for (Move m : movesForBlack) {
@@ -48,7 +48,7 @@ public class Game {
             System.out.println("Board Evaluation is:" + boardeval.evaluateBoard(board, PlayerType.BLACK));
             System.out.println("----------------------------\n");
 
-            makeMove(nextMoveBlack);
+            board.makeMove(nextMoveBlack);
             board.Display();
 
             //check if black already won
@@ -66,7 +66,16 @@ public class Game {
                 break;
             }
             ArrayList<Move> movesForWhite = white.allowedMoves;
-            Move nextMoveWhite = movesForWhite.get((int) (Math.random() * movesForWhite.size()));
+            Move nextMoveWhite = new Move(new Position(0,0), new Position(0,0));//movesForWhite.get((int) (Math.random() * movesForWhite.size()));
+            int max = Integer.MIN_VALUE;
+
+            for (Move m : movesForWhite) {
+                int alpha = new AlphaBeta().alphaBeta(board, PlayerType.WHITE, 0, Integer.MIN_VALUE, Integer.MAX_VALUE, m);
+                if (alpha > max) {
+                    max = alpha;
+                    nextMoveWhite = m;
+                }
+            }
 
             System.out.println("Moves avaliable are: (White)");
             System.out.println("----------------------------");
@@ -76,7 +85,7 @@ public class Game {
             System.out.println("Board Evaluation is:" + boardeval.evaluateBoard(board, PlayerType.WHITE));
             System.out.println("----------------------------\n");
 
-            makeMove(nextMoveWhite);
+            board.makeMove(nextMoveWhite);
             board.Display();
 
             //check if white already won
@@ -87,51 +96,6 @@ public class Game {
             //************************************************************************************************
         }
 
-    }
-
-    // make sure a move is valid
-    private void makeMove(Move move) {
-        int x1 = move.getIntialpos().getX();
-        int y1 = move.getIntialpos().getY();
-        int x2 = move.getFinalpos().getX();
-        int y2 = move.getFinalpos().getY();
-        CheckerType ct = board.getBoard()[x1][y1].getType();
-
-        board.getBoard()[x2][y2] = new Checker(ct, new Position(x2, y2));
-        board.getBoard()[x1][y1] = null;
-
-        if (move.getIsCapture()) {
-            MoveDir dir = x2 < x1 ? (y2 < y1 ? MoveDir.forwardLeft : MoveDir.forwardRight)
-                    : (y2 < y1 ? MoveDir.backwardLeft : MoveDir.backwardRight);
-
-            // Removing Piece from the board
-            switch (dir) {
-                case forwardRight:
-                    board.getBoard()[x1 - 1][y1 + 1] = null;
-                    break;
-                case forwardLeft:
-                    board.getBoard()[x1 - 1][y1 - 1] = null;
-                    break;
-                case backwardRight:
-                    board.getBoard()[x1 + 1][y1 + 1] = null;
-                    break;
-                case backwardLeft:
-                    board.getBoard()[x1 + 1][y1 - 1] = null;
-                    break;
-            }
-            if (ct == CheckerType.BLACK_KING || ct == CheckerType.BLACK_REGULAR) {
-                board.setWhiteCheckers(board.getWhiteCheckers() - 1);
-            } else {
-                board.setBlackCheckers(board.getBlackCheckers() - 1);
-            }
-        }
-
-        //promote to King
-        if (ct == CheckerType.BLACK_REGULAR && x2 == 0) {
-            board.getBoard()[x2][y2].setType(CheckerType.BLACK_KING);
-        } else if (ct == CheckerType.WHITE_REGULAR && x2 == Board.rows - 1) {
-            board.getBoard()[x2][y2].setType(CheckerType.WHITE_KING);
-        }
     }
 
     public static void congratulateWinner(PlayerType player) {
