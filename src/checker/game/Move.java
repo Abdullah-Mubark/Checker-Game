@@ -39,12 +39,16 @@ public class Move {
 
     @Override
     public String toString() {
-        return String.format("%s --> %s", this.intialpos.toString(), this.finalpos.toString());
+        if (this.isCapture) {
+            return String.format("%s --> %s [Capture]", this.intialpos.toString(), this.finalpos.toString());
+        } else {
+            return String.format("%s --> %s", this.intialpos.toString(), this.finalpos.toString());
+        }
     }
 
     public boolean equals(Move move) {
         return (this.intialpos.equals(move.intialpos)
-                && this.finalpos.equals(move.finalpos));
+                && this.finalpos.equals(move.finalpos) && this.isCapture == move.isCapture);
     }
 
     public Position getIntialpos() {

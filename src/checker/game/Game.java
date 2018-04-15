@@ -14,94 +14,75 @@ import java.util.ArrayList;
 public class Game {
 
     public static Board board;
+    public static BoardEvaluation boardeval;
 
     public Game() {
         board = Board.getInstance();
+        boardeval = BoardEvaluation.getInstance();
     }
 
     public void PlayGame() {
 
-//        board.getBoard()[1][0] = null;
-//        board.getBoard()[0][1] = null;
-//        board.getBoard()[0][3] = null;
-//        board.getBoard()[0][5] = null;
-//        board.getBoard()[0][7] = null;
-//        board.getBoard()[2][7] = null;
-//        board.setWhiteCheckers(board.getWhiteCheckers() - 6);
-        while (!Game.board.CheckGameComplete()) {
+        while (true) {
 
             // Black's turn
+            //************************************************************************************************
             Black.calculateAllpossibleMoves(board);
+            if (board.CheckGameDraw(PlayerType.BLACK)) {
+                congratulateWinner(PlayerType.WHITE);
+                break;
+            }
+
             ArrayList<Move> movesForBlack = Black.allowedMoves;
             Move nextMoveBlack = movesForBlack.get((int) (Math.random() * movesForBlack.size()));
+
             System.out.println("Moves avaliable are: (BLACK)");
             System.out.println("----------------------------");
             for (Move m : movesForBlack) {
                 System.out.println(m.toString());
             }
-            System.out.println("----------------------------");
+            System.out.println("Board Evaluation is:" + boardeval.evaluateBoard(board, PlayerType.BLACK));
+            System.out.println("----------------------------\n");
+
             makeMove(nextMoveBlack);
             board.Display();
 
             //check if black already won
-            if (Game.board.CheckGameComplete()) {
+            if (board.CheckGameComplete()) {
+                congratulateWinner(PlayerType.BLACK);
                 break;
             }
+            //************************************************************************************************
 
             // White's turn
+            //************************************************************************************************
             White.calculateAllpossibleMoves(board);
+            if (board.CheckGameDraw(PlayerType.WHITE)) {
+                congratulateWinner(PlayerType.BLACK);
+                break;
+            }
             ArrayList<Move> movesForWhite = White.allowedMoves;
             Move nextMoveWhite = movesForWhite.get((int) (Math.random() * movesForWhite.size()));
+
             System.out.println("Moves avaliable are: (White)");
             System.out.println("----------------------------");
             for (Move m : movesForWhite) {
                 System.out.println(m.toString());
             }
-            System.out.println("----------------------------");
+            System.out.println("Board Evaluation is:" + boardeval.evaluateBoard(board, PlayerType.WHITE));
+            System.out.println("----------------------------\n");
+
             makeMove(nextMoveWhite);
             board.Display();
 
-            //board.Display();
-//            if(Game.board.CheckGameDraw(Player.white)){
-//                break;
-//            }
-//
-//           
-//            if(Game.board.CheckGameComplete()){
-//                UserInteractions.DisplayGreetings(Player.white);
-//                Game.board.Display();
-//                break;
-//            }
-//
-//            if(Game.board.CheckGameDraw(Player.black)){
-//                break;
-//            }
-//
-//            Game.board.Display();
-//
-//            Black.Move();
-//            if(Game.board.CheckGameComplete()){
-//                UserInteractions.DisplayGreetings(Player.black);
-//                Game.board.Display();
-//                break;
-//            }
+            //check if white already won
+            if (board.CheckGameComplete()) {
+                congratulateWinner(PlayerType.WHITE);
+                break;
+            }
+            //************************************************************************************************
         }
-//        ArrayList<Move> moves = Black.getNonForcedMoves(board);
-//        System.out.println(moves.size());
-//        ArrayList<Move> moves2 = Black.getForcedMoves(board);
-//        System.out.println(moves2.size());
-//        
-//        for (Move move : moves) {
-//            System.out.println(move.toString());     
-//        }
-//        System.out.println("");
-//        for (Move move2 : moves2) {
-//            System.out.println(move2.toString());
-//        }
-//
-//        makeMove(moves.get(0));
-////        makeMove(moves.get(2));
-//        board.Display();
+
     }
 
     // make sure a move is valid
@@ -147,5 +128,17 @@ public class Game {
         } else if (ct == CheckerType.WHITE_REGULAR && x2 == Board.rows - 1) {
             board.getBoard()[x2][y2].setType(CheckerType.WHITE_KING);
         }
+    }
+
+    public static void congratulateWinner(PlayerType player) {
+
+        System.out.println("\n\n");
+        System.out.println("----------------------------");
+        if (player.equals(PlayerType.WHITE)) {
+            System.out.println("Congratulation!!!!!!!!!! White has Won.");
+        } else {
+            System.out.println("Congratulation!!!!!!!!!! Black has Won.");
+        }
+        System.out.println("----------------------------");
     }
 }

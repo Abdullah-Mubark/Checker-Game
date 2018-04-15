@@ -5,6 +5,8 @@
  */
 package checker.game;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Kamal
@@ -64,7 +66,7 @@ public class Board {
     public void setWhiteCheckers(int whiteCheckers) {
         this.whiteCheckers = whiteCheckers;
     }
-    
+
     public Board duplicate() {
         Board newBoard = new Board(this.board);
         newBoard.blackCheckers = this.blackCheckers;
@@ -139,16 +141,14 @@ public class Board {
     }
 
     public boolean CheckGameDraw(PlayerType turn) {
-//        
-//        ArrayList<Move> possibleMoveSeq = Robot.expandMoves(this.duplicate(), turn);
-//        
-//        if(possibleMoveSeq.isEmpty()){
-//            return true;
-//            
-//        }else{
-//            return false;
-//        }
-        return true;
+        ArrayList<Move> possibleMoves;
+        if (turn == PlayerType.BLACK) {
+            possibleMoves = Black.allowedMoves;
+        } else {
+            possibleMoves = White.allowedMoves;
+        }
+
+        return possibleMoves.isEmpty();
     }
 
     public Checker[][] getBoard() {
@@ -158,12 +158,20 @@ public class Board {
     public void setBoard(Checker[][] board) {
         this.board = board;
     }
-    
-    public static boolean CheckerIsBlack(Checker c){
-        return c.getType()== CheckerType.BLACK_REGULAR || c.getType()== CheckerType.BLACK_KING;
+
+    public static boolean CheckerIsBlack(Checker c) {
+        return c.getType() == CheckerType.BLACK_REGULAR || c.getType() == CheckerType.BLACK_KING;
     }
-    
-    public static boolean CheckerIsWhite(Checker c){
-         return c.getType()== CheckerType.WHITE_REGULAR || c.getType()== CheckerType.WHITE_KING;
+
+    public static boolean CheckerIsWhite(Checker c) {
+        return c.getType() == CheckerType.WHITE_REGULAR || c.getType() == CheckerType.WHITE_KING;
+    }
+
+    public static boolean isWhiteWinner() {
+        return Board.getInstance().blackCheckers == 0;
+    }
+
+    public static boolean isBlackWinner() {
+        return Board.getInstance().whiteCheckers == 0;
     }
 }
