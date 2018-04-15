@@ -5,8 +5,6 @@
  */
 package checker.game;
 
-import java.util.ArrayList;
-
 /**
  *
  * @author Abdullah

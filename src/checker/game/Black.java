@@ -121,7 +121,7 @@ public class Black {
         return null;
     }
 
-    private  Move getBackwardRight(Position position, Board board) {
+    private Move getBackwardRight(Position position, Board board) {
         Checker[][] gameBoard = board.getBoard();
         if (position.getY() < gameBoard.length - 1 && position.getX() < gameBoard.length - 1) /*Valid Movement*/ {
             //check if next cell is empty
@@ -134,7 +134,7 @@ public class Black {
         return null;
     }
 
-    private  Move getBackwardLeft(Position position, Board board) {
+    private Move getBackwardLeft(Position position, Board board) {
         Checker[][] gameBoard = board.getBoard();
         if (position.getY() >= 1 && position.getX() < gameBoard.length - 1) /*Valid Movement*/ {
             //check if next cell is empty
@@ -147,7 +147,7 @@ public class Black {
         return null;
     }
 
-    private  Move getCaptureForwardLeft(Position position, Board board) {
+    private Move getCaptureForwardLeft(Position position, Board board) {
         Checker[][] gameBoard = board.getBoard();
         if (position.getY() >= 2 && position.getX() >= 2) /*Valid Movement*/ {
             //check if next cell is empty
@@ -165,7 +165,7 @@ public class Black {
         return null;
     }
 
-    private  Move getCaptureForwardRight(Position position, Board board) {
+    private Move getCaptureForwardRight(Position position, Board board) {
         Checker[][] gameBoard = board.getBoard();
         if (position.getY() < gameBoard.length - 2 && position.getX() >= 2) /*Valid Movement*/ {
             //check if next cell is empty
@@ -182,7 +182,7 @@ public class Black {
         return null;
     }
 
-    private  Move getCaptureBackwardLeft(Position position, Board board) {
+    private Move getCaptureBackwardLeft(Position position, Board board) {
         Checker[][] gameBoard = board.getBoard();
         if (position.getY() >= 2 && position.getX() < board.getBoard().length - 2) /*Valid Movement*/ {
             //check if next cell is empty
@@ -200,7 +200,7 @@ public class Black {
         return null;
     }
 
-    private  Move getCaptureBackwardRight(Position position, Board board) {
+    private Move getCaptureBackwardRight(Position position, Board board) {
         Checker[][] gameBoard = board.getBoard();
         if (position.getY() < gameBoard.length - 2 && position.getX() < board.getBoard().length - 2) /*Valid Movement*/ {
             //check if next cell is empty

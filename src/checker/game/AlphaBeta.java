@@ -12,9 +12,8 @@ import java.util.ArrayList;
  * @author Tauta
  */
 public class AlphaBeta {
-    static int MAX_DEPTH = 5;
+    static int MAX_DEPTH = 6;
     BoardEvaluation boardEvaluator = new BoardEvaluation();
-    ArrayList<Move> bestMoves = new ArrayList<>();
     
     AlphaBeta(){}
     
@@ -96,7 +95,7 @@ public class AlphaBeta {
     public ArrayList<Board> getBoards(Board board,ArrayList<Move> moves){
         ArrayList<Board> possibleBoards = new ArrayList<>();
             for(Move m: moves){
-                Board newBoard = board.duplicate();
+                Board newBoard = new Board(board.getBoard());
                 newBoard.makeMove(m);
                 possibleBoards.add(newBoard);
             }
@@ -105,7 +104,7 @@ public class AlphaBeta {
     
     
     public Board getBoard(Board board, Move move){
-        Board newBoard = board.duplicate();
+        Board newBoard = new Board(board.getBoard());
         newBoard.makeMove(move);
         
         return newBoard;

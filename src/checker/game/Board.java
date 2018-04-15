@@ -13,14 +13,11 @@ import java.util.ArrayList;
  */
 public class Board {
 
-  
     private int blackCheckers;
     private int whiteCheckers;
     public static final int rows = 8;
     public static final int cols = 8;
     private Checker[][] board;
-
-   
 
     public Board() {
         this.blackCheckers = this.whiteCheckers = 12;
@@ -36,7 +33,7 @@ public class Board {
             {new Checker(CheckerType.BLACK_REGULAR, new Position(7, 0)), null, new Checker(CheckerType.BLACK_REGULAR, new Position(7, 2)), null, new Checker(CheckerType.BLACK_REGULAR, new Position(7, 4)), null, new Checker(CheckerType.BLACK_REGULAR, new Position(7, 6)), null},};
     }
 
-    private Board(Checker[][] board) {
+    public Board(Checker[][] board) {
         this.blackCheckers = this.whiteCheckers = 12;
 
         this.board = new Checker[rows][cols];

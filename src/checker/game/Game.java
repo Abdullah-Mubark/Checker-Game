@@ -6,6 +6,8 @@
 package checker.game;
 
 import java.util.ArrayList;
+import java.util.Scanner;
+import java.util.regex.Pattern;
 
 /**
  *
@@ -38,13 +40,14 @@ public class Game {
             }
 
             ArrayList<Move> movesForBlack = black.allowedMoves;
-//            Move nextMoveBlack = movesForBlack.get((int) (Math.random() * movesForBlack.size()));
-            Move nextMoveBlack = movesForBlack.get((int) (Math.random() * movesForBlack.size()));
-            System.out.println("Moves avaliable are: (BLACK)");
+            //Move nextMoveBlack = movesForBlack.get((int) (Math.random() * movesForBlack.size()));
+
+            //System.out.println("Moves avaliable are: (BLACK)");
             System.out.println("----------------------------");
-            for (Move m : movesForBlack) {
-                System.out.println(m.toString());
-            }
+//            for (Move m : movesForBlack) {
+//                System.out.println(m.toString());
+//            }
+            Move nextMoveBlack = PickMove(movesForBlack);
             System.out.println("Board Evaluation is:" + boardeval.evaluateBoard(board, PlayerType.BLACK));
             System.out.println("----------------------------\n");
 
@@ -66,11 +69,12 @@ public class Game {
                 break;
             }
             ArrayList<Move> movesForWhite = white.allowedMoves;
-            Move nextMoveWhite = new Move(new Position(0,0), new Position(0,0));//movesForWhite.get((int) (Math.random() * movesForWhite.size()));
+            Move nextMoveWhite = new Move(new Position(0, 0), new Position(0, 0));//movesForWhite.get((int) (Math.random() * movesForWhite.size()));
             int max = Integer.MIN_VALUE;
-
+            AlphaBeta ap = new AlphaBeta();
             for (Move m : movesForWhite) {
-                int alpha = new AlphaBeta().alphaBeta(board, PlayerType.WHITE, 0, Integer.MIN_VALUE, Integer.MAX_VALUE, m);
+                int alpha = ap.alphaBeta(board, PlayerType.WHITE, 0, Integer.MIN_VALUE, Integer.MAX_VALUE, m);
+                System.out.println(alpha);
                 if (alpha > max) {
                     max = alpha;
                     nextMoveWhite = m;
@@ -96,6 +100,20 @@ public class Game {
             //************************************************************************************************
         }
 
+    }
+
+    public Move PickMove(ArrayList<Move> moves) {
+        Scanner s = new Scanner(System.in);
+        System.out.println("Pick one of the following moves");
+        for (int i = 0; i < moves.size(); i++) {
+            System.out.println(i + ": " + moves.get(i).toString());
+        }
+        String input = s.nextLine();
+        while (input.matches("") && Integer.parseInt(input) >= moves.size()) {
+            System.out.println("Wrong input");
+            input = s.nextLine();
+        }
+        return moves.get(Integer.parseInt(input));
     }
 
     public static void congratulateWinner(PlayerType player) {
