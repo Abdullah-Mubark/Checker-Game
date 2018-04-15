@@ -15,25 +15,29 @@ public class Game {
 
     public static Board board;
     public static BoardEvaluation boardeval;
+    public static Black black;
+    public static White white;
 
     public Game() {
-        board = Board.getInstance();
+        board = new Board();
         boardeval = BoardEvaluation.getInstance();
+        black = new Black();
+        white = new White();
     }
 
     public void PlayGame() {
 
         while (true) {
-
+            
             // Black's turn
             //************************************************************************************************
-            Black.calculateAllpossibleMoves(board);
+            black.calculateAllpossibleMoves(board);
             if (board.CheckGameDraw(PlayerType.BLACK)) {
                 congratulateWinner(PlayerType.WHITE);
                 break;
             }
 
-            ArrayList<Move> movesForBlack = Black.allowedMoves;
+            ArrayList<Move> movesForBlack = black.allowedMoves;
             Move nextMoveBlack = movesForBlack.get((int) (Math.random() * movesForBlack.size()));
 
             System.out.println("Moves avaliable are: (BLACK)");
@@ -56,12 +60,12 @@ public class Game {
 
             // White's turn
             //************************************************************************************************
-            White.calculateAllpossibleMoves(board);
+            white.calculateAllpossibleMoves(board);
             if (board.CheckGameDraw(PlayerType.WHITE)) {
                 congratulateWinner(PlayerType.BLACK);
                 break;
             }
-            ArrayList<Move> movesForWhite = White.allowedMoves;
+            ArrayList<Move> movesForWhite = white.allowedMoves;
             Move nextMoveWhite = movesForWhite.get((int) (Math.random() * movesForWhite.size()));
 
             System.out.println("Moves avaliable are: (White)");

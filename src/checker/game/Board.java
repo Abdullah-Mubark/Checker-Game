@@ -13,22 +13,18 @@ import java.util.ArrayList;
  */
 public class Board {
 
-    private static Board instance;
+    private Board instance;
     private int blackCheckers;
     private int whiteCheckers;
     public static final int rows = 8;
     public static final int cols = 8;
     private Checker[][] board;
 
-    public static Board getInstance() {
-        if (instance == null) {
-            return new Board();
-        } else {
-            return instance;
-        }
+    public Board getInstance() {
+        return new Board();
     }
 
-    private Board() {
+    public Board() {
         this.blackCheckers = this.whiteCheckers = 12;
 
         this.board = new Checker[][]{
@@ -50,7 +46,7 @@ public class Board {
             System.arraycopy(board[i], 0, this.board[i], 0, cols);
         }
     }
-
+    
     public int getBlackCheckers() {
         return blackCheckers;
     }
@@ -142,10 +138,15 @@ public class Board {
 
     public boolean CheckGameDraw(PlayerType turn) {
         ArrayList<Move> possibleMoves;
+
         if (turn == PlayerType.BLACK) {
-            possibleMoves = Black.allowedMoves;
+            Black black = new Black();
+            black.calculateAllpossibleMoves(this);
+            possibleMoves = black.allowedMoves;
         } else {
-            possibleMoves = White.allowedMoves;
+            White white = new White();
+            white.calculateAllpossibleMoves(this);
+            possibleMoves = white.allowedMoves;
         }
 
         return possibleMoves.isEmpty();
@@ -159,19 +160,19 @@ public class Board {
         this.board = board;
     }
 
-    public static boolean CheckerIsBlack(Checker c) {
+    public boolean CheckerIsBlack(Checker c) {
         return c.getType() == CheckerType.BLACK_REGULAR || c.getType() == CheckerType.BLACK_KING;
     }
 
-    public static boolean CheckerIsWhite(Checker c) {
+    public boolean CheckerIsWhite(Checker c) {
         return c.getType() == CheckerType.WHITE_REGULAR || c.getType() == CheckerType.WHITE_KING;
     }
 
-    public static boolean isWhiteWinner() {
-        return Board.getInstance().blackCheckers == 0;
+    public boolean isWhiteWinner() {
+        return blackCheckers == 0;
     }
 
-    public static boolean isBlackWinner() {
-        return Board.getInstance().whiteCheckers == 0;
+    public boolean isBlackWinner() {
+        return whiteCheckers == 0;
     }
 }

@@ -12,21 +12,18 @@ import java.util.ArrayList;
  * @author Abdullah
  */
 public class BoardEvaluation {
-    private static BoardEvaluation instance;
+
+    private BoardEvaluation instance;
     public final int POINT_WON = 100000;
     public final int POINT_KING = 2000;
     public final int POINT_NORMAL = 1000;
     public final int POINT_NORMAL_ATTACK = 50;
     public final int POINT_KILL_ATTACK = 100;
-    
+
     public static BoardEvaluation getInstance() {
-        if (instance == null) {
-            return new BoardEvaluation();
-        } else {
-            return instance;
-        }
+        return new BoardEvaluation();
     }
-    
+
     public int evaluateBoard(Board board, PlayerType player) {
         int boardValue = 0;
 
@@ -103,10 +100,16 @@ public class BoardEvaluation {
     }
 
     private int BoardAttacksPoints(Board board) {
-        
+
         int value = 0;
-        ArrayList<Move> blackMoves = Black.allowedMoves;
-        ArrayList<Move> whiteMoves = Black.allowedMoves;
+        Black black = new Black();
+        black.calculateAllpossibleMoves(board);
+        ArrayList<Move> blackMoves = black.allowedMoves;
+
+        White white = new White();
+        white.calculateAllpossibleMoves(board);
+        ArrayList<Move> whiteMoves = white.allowedMoves;
+
         // calculate moves points for black
         for (Move Bmove : blackMoves) {
             if (Bmove.getIsCapture()) {
@@ -114,7 +117,7 @@ public class BoardEvaluation {
             } else {
                 value -= POINT_NORMAL_ATTACK;
             }
-            
+
         }
         // calculate moves points for white
         for (Move Wmove : whiteMoves) {
