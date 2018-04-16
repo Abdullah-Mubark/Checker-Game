@@ -12,12 +12,18 @@ import java.util.ArrayList;
  * @author Tauta
  */
 public class AlphaBeta {
-    static int MAX_DEPTH = 6;
+    public int MAX_DEPTH;
     BoardEvaluation boardEvaluator = new BoardEvaluation();
+    Move bestMove;
+    AlphaBeta(int diff){
+    if(diff==1){
+        MAX_DEPTH = 6;
+    }else if (diff == 0){
+        MAX_DEPTH = 2;
+    }
+    }
     
-    AlphaBeta(){}
-    
-    public int alphaBeta(Board board, PlayerType player, int depth, int alpha, int beta, Move move){
+    public int alphaBeta(Board board, PlayerType player, int depth, int alpha, int beta){
         
         if(!canExploreFurther(board, player, depth)){
             int value = boardEvaluator.evaluateBoard(board, player);
@@ -48,7 +54,7 @@ public class AlphaBeta {
                 Board b = possibleBoardConf.get(i);
                 Move moveSeq = possibleMoveSeq.get(i);
                 
-                int value = alphaBeta(b, PlayerType.BLACK, depth+1, alpha, beta, move);
+                int value = alphaBeta(b, PlayerType.BLACK, depth+1, alpha, beta);
 
                 if(value > alpha){
                     alpha = value;
@@ -61,7 +67,7 @@ public class AlphaBeta {
             
             //If the depth is 0, copy the bestMoveSeq in the result move seq.
             if(depth == 0 && bestMoveSeq!=null){
-                move = bestMoveSeq;
+                bestMove = bestMoveSeq;
             }
 
             return alpha;
@@ -74,7 +80,7 @@ public class AlphaBeta {
                 Board b = possibleBoardConf.get(i);
                 Move moveSeq = possibleMoveSeq.get(i);
                 
-                int value = alphaBeta(b, PlayerType.BLACK, depth+1, alpha, beta, move);
+                int value = alphaBeta(b, PlayerType.BLACK, depth+1, alpha, beta);
                 if(value < beta){
                     bestMoveSeq = moveSeq;
                     beta = value;
@@ -85,7 +91,7 @@ public class AlphaBeta {
             }
             //If the depth is 0, copy the bestMoveSeq in the result move seq.
             if(depth == 0 && bestMoveSeq!=null){
-                move = bestMoveSeq;
+                bestMove = bestMoveSeq;
             }
 
             return beta;
@@ -110,7 +116,7 @@ public class AlphaBeta {
         return newBoard;
     }
     
-    public static boolean canExploreFurther(Board board, PlayerType player, int depth){
+    public boolean canExploreFurther(Board board, PlayerType player, int depth){
         boolean res = true;
         if(board.CheckGameComplete()  || board.CheckGameDraw(player)){
             res = false;

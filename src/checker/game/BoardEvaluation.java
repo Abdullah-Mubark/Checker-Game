@@ -5,18 +5,21 @@
  */
 package checker.game;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Abdullah
  */
 public class BoardEvaluation {
 
-    private BoardEvaluation instance;
     public final int POINT_WON = 100000;
     public final int POINT_KING = 2000;
     public final int POINT_NORMAL = 1000;
-//    public final int POINT_NORMAL_ATTACK = 50;
-//    public final int POINT_KILL_ATTACK = 100;
+    public final int POINT_NORMAL_MOVES = 40;
+    public final int POINT_ATTACK_MOVES = 80;
+    public final int POINT_CENTRAL_PIECE = 100;
+    public final int POINT_END_PIECE = 50;
 
     public static BoardEvaluation getInstance() {
         return new BoardEvaluation();
@@ -42,7 +45,7 @@ public class BoardEvaluation {
             return wValue;
         } else {
             wValue = WhiteBlackPiecesDifferencePoints(board);
-//            wValue += BoardAttacksPoints(board);
+            wValue += BoardAttacksPoints(board);
             wValue /= board.getBlackCheckers();
 
         }
@@ -58,7 +61,7 @@ public class BoardEvaluation {
             return bValue;
         } else {
             bValue = WhiteBlackPiecesDifferencePoints(board);
-//            bValue -= BoardAttacksPoints(board);
+            bValue -= BoardAttacksPoints(board);
             bValue /= board.getWhiteCheckers();
         }
 
@@ -75,7 +78,10 @@ public class BoardEvaluation {
                 if ((gameBoard[i][j] == null)) {
                     continue;
                 }
+                //Points Checkers Count
                 Checker c = gameBoard[i][j];
+                int row = c.getPosition().getX();
+                int col = c.getPosition().getY();
                 switch (c.getType()) {
                     case WHITE_REGULAR:
                         value += POINT_NORMAL;
@@ -91,40 +97,60 @@ public class BoardEvaluation {
                         break;
                 }
 
+                // Points for Central Checkers 
+                if ((board.CheckerIsWhite(c))
+                        && (((row == 3 && col == 3) || (row == 3 && col == 5)))) {
+                    value += POINT_CENTRAL_PIECE;
+                }
+                if ((board.CheckerIsBlack(c))
+                        && (((row == 4 && col == 2) || (row == 4 && col == 4)))) {
+                    value -= POINT_CENTRAL_PIECE;
+                }
+
+                // Points for End Checkers 
+                if (((c.getType() == CheckerType.WHITE_REGULAR))
+                        && (((row == 0 && col == 2) || (row == 0 && col == 4) || (row == 0 && col == 6)))) {
+                    value += POINT_END_PIECE;
+                }
+                if ((c.getType() == CheckerType.BLACK_REGULAR)
+                        && (((row == 1 && col == 7) || (row == 3 && col == 7) || (row == 5 && col == 7)))) {
+                    value -= POINT_END_PIECE;
+                }
+
             }
         }
 
         return value;
     }
 
-//    private int BoardAttacksPoints(Board board) {
-//
-//        int value = 0;
-//        Black black = new Black();
-//        black.calculateAllpossibleMoves(board);
-//        ArrayList<Move> blackMoves = black.allowedMoves;
-//
-//        White white = new White();
-//        white.calculateAllpossibleMoves(board);
-//        ArrayList<Move> whiteMoves = white.allowedMoves;
-//
-//        // calculate moves points for black
-//        for (Move Bmove : blackMoves) {
-//            if (Bmove.getIsCapture()) {
-//                value -= POINT_KILL_ATTACK;
-//            } else {
-//                value -= POINT_NORMAL_ATTACK;
-//            }
-//
-//        }
-//        // calculate moves points for white
-//        for (Move Wmove : whiteMoves) {
-//            if (Wmove.getIsCapture()) {
-//                value += POINT_KILL_ATTACK;
-//            } else {
-//                value += POINT_NORMAL_ATTACK;
-//            }
-//        }
-//        return value;
-//    }
+    private int BoardAttacksPoints(Board board) {
+
+        int value = 0;
+        Black black = new Black();
+        black.calculateAllpossibleMoves(board);
+        ArrayList<Move> blackMoves = black.allowedMoves;
+
+        White white = new White();
+        white.calculateAllpossibleMoves(board);
+        ArrayList<Move> whiteMoves = white.allowedMoves;
+
+        // calculate moves points for black
+        for (Move Bmove : blackMoves) {
+            if (Bmove.getIsCapture()) {
+                value -= POINT_ATTACK_MOVES;
+            } else {
+                value -= POINT_NORMAL_MOVES;
+            }
+
+        }
+        // calculate moves points for white
+        for (Move Wmove : whiteMoves) {
+            if (Wmove.getIsCapture()) {
+                value += POINT_ATTACK_MOVES;
+            } else {
+                value += POINT_NORMAL_MOVES;
+            }
+        }
+        return value;
+    }
 }
