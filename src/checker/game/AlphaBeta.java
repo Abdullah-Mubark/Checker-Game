@@ -118,7 +118,7 @@ public class AlphaBeta {
     
     public boolean canExploreFurther(Board board, PlayerType player, int depth){
         boolean res = true;
-        if(board.CheckGameComplete()  || board.CheckGameDraw(player)){
+        if(board.CheckGameComplete()  || board.CheckGameDraw(player) || board.CheckGameDraw(player)){
             res = false;
         }
         if(depth == MAX_DEPTH){

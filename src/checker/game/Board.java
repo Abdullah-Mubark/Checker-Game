@@ -58,14 +58,6 @@ public class Board {
         this.whiteCheckers = whiteCheckers;
     }
 
-    public Board duplicate() {
-        Board newBoard = new Board(this.board);
-        newBoard.blackCheckers = this.blackCheckers;
-        newBoard.whiteCheckers = this.whiteCheckers;
-
-        return newBoard;
-    }
-
     // make sure a move is valid
     public void makeMove(Move move) {
         int x1 = move.getIntialpos().getX();

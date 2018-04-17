@@ -7,7 +7,6 @@ package checker.game;
 
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.regex.Pattern;
 
 /**
  *
@@ -40,15 +39,14 @@ public class Game {
             }
 
             ArrayList<Move> movesForBlack = black.allowedMoves;
-            Move nextMoveBlack = movesForBlack.get((int) (Math.random() * movesForBlack.size()));
-            System.out.println("Moves avaliable are: (BLACK)");
-            
+            //Move nextMoveBlack = movesForBlack.get((int) (Math.random() * movesForBlack.size()));
+            //System.out.println("Moves avaliable are: (BLACK)");
+//            for (Move m : movesForBlack) {
+//                System.out.println(m.toString());
+//            }
             System.out.println("----------------------------");
-            for (Move m : movesForBlack) {
-                System.out.println(m.toString());
-            }
-            //Move nextMoveBlack = PickMove(movesForBlack);
-            System.out.println("Board Evaluation is:" + boardeval.evaluateBoard(board, PlayerType.BLACK));
+            Move nextMoveBlack = PickMove(movesForBlack);
+            //System.out.println("Board Evaluation is:" + boardeval.evaluateBoard(board, PlayerType.BLACK));
             System.out.println("----------------------------\n");
 
             board.makeMove(nextMoveBlack);
@@ -70,13 +68,14 @@ public class Game {
             ArrayList<Move> movesForWhite = white.allowedMoves;
             AlphaBeta ap = new AlphaBeta(diffuculty);
             int alpha = ap.alphaBeta(board, PlayerType.WHITE, 0, Integer.MIN_VALUE, Integer.MAX_VALUE);
-           
-            System.out.println("Moves avaliable are: (White)");
+
+            //System.out.println("Moves avaliable are: (White)");
             System.out.println("----------------------------");
-            for (Move m : movesForWhite) {
-                System.out.println(m.toString());
-            }
-            System.out.println("Board Evaluation is:" + boardeval.evaluateBoard(board, PlayerType.WHITE));
+//            for (Move m : movesForWhite) {
+//                System.out.println(m.toString());
+//            }
+            System.out.println("Bots Move was: " + ap.bestMove.toString());
+            //System.out.println("Board Evaluation is:" + boardeval.evaluateBoard(board, PlayerType.WHITE));
             System.out.println("----------------------------\n");
 
             board.makeMove(ap.bestMove);
@@ -99,7 +98,7 @@ public class Game {
             System.out.println(i + ": " + moves.get(i).toString());
         }
         String input = s.nextLine();
-        while (input.matches("^\\d+$") && Integer.parseInt(input) >= moves.size()) {
+        while (!input.matches("^\\d+$") && Integer.parseInt(input) >= moves.size()) {
             System.out.println("Wrong input");
             input = s.nextLine();
         }

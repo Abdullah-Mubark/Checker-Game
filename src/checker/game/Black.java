@@ -30,25 +30,29 @@ public class Black {
                 Move forwardLeftCapture = getCaptureForwardLeft(gameBoard[i][j].getPosition(), board);
                 Move forwardRightCapture = getCaptureForwardRight(gameBoard[i][j].getPosition(), board);
 
-                if (forwardRightCapture != null) {
-                    moves.add(forwardRightCapture);
-                }
+                
                 if (forwardLeftCapture != null) {
                     moves.add(forwardLeftCapture);
                 }
+                if (forwardRightCapture != null) {
+                    moves.add(forwardRightCapture);
+                }
+                
 
                 // if checker is king
                 if (gameBoard[i][j].getType() == CheckerType.BLACK_KING) {
 
                     Move backwardLeftCapture = getCaptureBackwardLeft(gameBoard[i][j].getPosition(), board);
                     Move backwardRightCapture = getCaptureBackwardRight(gameBoard[i][j].getPosition(), board);
-
+                    
                     if (backwardLeftCapture != null) {
                         moves.add(backwardLeftCapture);
                     }
                     if (backwardRightCapture != null) {
                         moves.add(backwardRightCapture);
                     }
+                    
+                    
                 }
             }
         }
@@ -69,12 +73,13 @@ public class Black {
                 Move forwardLeftMove = getForwardLeft(gameBoard[i][j].getPosition(), board);
                 Move forwardRightMoves = getForwardRight(gameBoard[i][j].getPosition(), board);
 
-                if (forwardRightMoves != null) {
-                    moves.add(forwardRightMoves);
-                }
                 if (forwardLeftMove != null) {
                     moves.add(forwardLeftMove);
                 }
+                if (forwardRightMoves != null) {
+                    moves.add(forwardRightMoves);
+                }
+                
 
                 // if checker is king
                 if (gameBoard[i][j].getType() == CheckerType.BLACK_KING) {
