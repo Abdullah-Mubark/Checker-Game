@@ -74,7 +74,7 @@ public class Game {
 //            for (Move m : movesForWhite) {
 //                System.out.println(m.toString());
 //            }
-            System.out.println("Bots Move was: " + ap.bestMove.toString());
+            System.out.println("Bot's Move was: " + ap.bestMove.toString());
             //System.out.println("Board Evaluation is:" + boardeval.evaluateBoard(board, PlayerType.WHITE));
             System.out.println("----------------------------\n");
 
@@ -98,7 +98,7 @@ public class Game {
             System.out.println(i + ": " + moves.get(i).toString());
         }
         String input = s.nextLine();
-        while (!input.matches("^\\d+$") && Integer.parseInt(input) >= moves.size()) {
+        while (!input.matches("^\\d+$") || Integer.parseInt(input) >= moves.size()) {
             System.out.println("Wrong input");
             input = s.nextLine();
         }

@@ -8,7 +8,7 @@ public class main {
         System.out.println("Pick The diffuculty:\n0 for easy\n1 for diffucult");
         Scanner s = new Scanner(System.in);
         String input = s.nextLine();
-         while (!input.matches("^\\d+$") && input.matches("0") && input.matches("1")) {
+         while (!input.matches("^\\d+$") || (Integer.parseInt(input)!=0 && Integer.parseInt(input)!=1) ) {
             System.out.println("Wrong input");
             input = s.nextLine();
         }
